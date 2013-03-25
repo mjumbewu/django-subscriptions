@@ -1,0 +1,23 @@
+language: python
+
+python:
+  - "2.6"
+  - "2.7"
+  - "3.3"
+
+env:
+  - DJANGO="django<1.5" # The latest 1.4
+  - DJANGO="django<1.6" # The latest stable
+  - DJANGO="git+git://github.com/django/django.git#egg=django"
+
+install:
+  - pip install -q $DJANGO --use-mirrors
+  - pip install .  # Test that we can install the package
+  - pip install -q -r requirements.txt --use-mirrors
+
+script: python manage.py test subscriptions
+
+matrix:
+  exclude:
+    - python: "3.3"
+      env: DJANGO="django<1.5"

@@ -1,0 +1,4 @@
+User should be able to subscribe to an RSS feed by email
+User should be able to subscribe to an RSS feed by SMS
+
+Different users should receive different notification content based on the last time they received a notification
