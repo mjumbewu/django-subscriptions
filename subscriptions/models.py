@@ -1,5 +1,5 @@
 import logging
-from django.utils.timezone import datetime, utc, now
+from django.utils.timezone import datetime, timedelta, utc, now
 from django.db import models
 from jsonfield import JSONField
 
@@ -35,7 +35,7 @@ class FeedRecord (models.Model):
     """A JSON blob representing the parameters used to retrieve the content
        feed from the library"""
 
-    last_updated = models.DateTimeField(default=datetime.min.replace(tzinfo=utc))
+    last_updated = models.DateTimeField(default=(datetime.min + timedelta(days=1)).replace(tzinfo=utc))
     """The stored value of the last time content in the feed was updated."""
 
     def __unicode__(self):
@@ -55,11 +55,11 @@ class FeedRecord (models.Model):
 
 class Subscriber (User): # TODO: Should use the configured User model, not necessarily auth.User
 
+    user = models.OneToOneField('auth.User', parent_link=True)
+    """The auth.User object that this object extends"""
+
     # subscriptions (backref)
     """The set of subscriptions for this user"""
-
-    class Meta:
-        proxy = True
 
     def subscribe(self, feed, library=None, commit=True):
         """Subscribe the user to a content feed."""
@@ -105,7 +105,7 @@ class Subscriber (User): # TODO: Should use the configured User model, not neces
 
 
 class Subscription (models.Model):
-    subscriber = models.ForeignKey(User, related_name='subscriptions')
+    subscriber = models.ForeignKey(Subscriber, related_name='subscriptions')
     feed_record = models.ForeignKey(FeedRecord)
     last_sent = models.DateTimeField(blank=True)
 

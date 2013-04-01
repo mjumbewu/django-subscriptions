@@ -8,13 +8,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Renaming field 'FeedRecord.feed_name' to 'feed_type'
-        db.rename_column(u'subscriptions_feedrecord', 'feed_name', 'feed_type')
+        # Renaming field 'Subscriber.user_ptr'
+        db.rename_column(u'subscriptions_subscriber', 'user_ptr_id', 'user_id')
 
 
     def backwards(self, orm):
-        # Renaming field 'FeedRecord.feed_type' to 'feed_name'
-        db.rename_column(u'subscriptions_feedrecord', 'feed_type', 'feed_name')
+        # Renaming field 'Subscriber.user'
+        db.rename_column(u'subscriptions_subscriber', 'user_id', 'user_ptr_id')
 
 
     models = {
@@ -56,21 +56,21 @@ class Migration(SchemaMigration):
         },
         u'subscriptions.feedrecord': {
             'Meta': {'object_name': 'FeedRecord'},
-            'feed_params': ('jsonfield.fields.JSONField', [], {'default': '{}'}),
+            'feed_params': ('jsonfield.fields.JSONField', [], {}),
             'feed_type': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_updated': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(1, 1, 1, 0, 0)'})
         },
-        'subscriptions.subscriber': {
-            'Meta': {'object_name': 'Subscriber', '_ormbases': ['auth.User']},
-            'user_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
+        u'subscriptions.subscriber': {
+            'Meta': {'object_name': 'Subscriber', '_ormbases': [u'auth.User']},
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'subscriptions.subscription': {
             'Meta': {'object_name': 'Subscription'},
             'feed_record': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['subscriptions.FeedRecord']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_sent': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
-            'subscriber': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'subscriptions'", 'to': "orm['subscriptions.Subscriber']"})
+            'subscriber': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'subscriptions'", 'to': u"orm['subscriptions.Subscriber']"})
         },
         u'subscriptions.subscriptiondispatchrecord': {
             'Meta': {'object_name': 'SubscriptionDispatchRecord'},

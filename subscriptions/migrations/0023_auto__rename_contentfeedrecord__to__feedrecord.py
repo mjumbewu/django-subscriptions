@@ -61,12 +61,16 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_updated': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(1, 1, 1, 0, 0)'})
         },
+        u'subscriptions.subscriber': {
+            'Meta': {'object_name': 'Subscriber', '_ormbases': [u'auth.User']},
+            'user_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
+        },
         u'subscriptions.subscription': {
             'Meta': {'object_name': 'Subscription'},
             'feed_record': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['subscriptions.FeedRecord']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_sent': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
-            'subscriber': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'subscriptions'", 'to': u"orm['auth.User']"})
+            'subscriber': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'subscriptions'", 'to': "orm['subscriptions.Subscriber']"})
         },
         u'subscriptions.subscriptiondispatchrecord': {
             'Meta': {'object_name': 'SubscriptionDispatchRecord'},

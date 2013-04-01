@@ -9,6 +9,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',  # For the User model
     'django.contrib.contenttypes',
     'django.contrib.sites', # For including the site name when dispatching. TODO: Should not be required.
+    'south',
     'subscriptions',
 )
 
